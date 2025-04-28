@@ -1,0 +1,194 @@
+ARM GAS  C:\Users\tiend\AppData\Local\Temp\ccsToSib.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"timer_software.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.set_timer,"ax",%progbits
+  18              		.align	1
+  19              		.global	set_timer
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	set_timer:
+  25              	.LVL0:
+  26              	.LFB65:
+  27              		.file 1 "Core/Src/timer_software.c"
+   1:Core/Src/timer_software.c **** #include "timer_software.h"
+   2:Core/Src/timer_software.c **** #include "main.h"
+   3:Core/Src/timer_software.c **** 
+   4:Core/Src/timer_software.c **** int timer_counter[10] = {0}; // Mảng đếm thời gian cho 10 timer
+   5:Core/Src/timer_software.c **** int timerFLag[10] = {0};    // Mảng cờ cho 10 timer
+   6:Core/Src/timer_software.c **** 
+   7:Core/Src/timer_software.c **** void set_timer(int index, int counter)
+   8:Core/Src/timer_software.c **** {
+  28              		.loc 1 8 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+   9:Core/Src/timer_software.c ****     timer_counter[index] = counter / 10;
+  33              		.loc 1 9 5 view .LVU1
+  34              		.loc 1 9 36 is_stmt 0 view .LVU2
+  35 0000 064B     		ldr	r3, .L2
+  36 0002 83FB0123 		smull	r2, r3, r3, r1
+  37 0006 C917     		asrs	r1, r1, #31
+  38              	.LVL1:
+  39              		.loc 1 9 36 view .LVU3
+  40 0008 C1EBA301 		rsb	r1, r1, r3, asr #2
+  41              		.loc 1 9 26 view .LVU4
+  42 000c 044B     		ldr	r3, .L2+4
+  43 000e 43F82010 		str	r1, [r3, r0, lsl #2]
+  10:Core/Src/timer_software.c ****     timerFLag[index] = 0;
+  44              		.loc 1 10 5 is_stmt 1 view .LVU5
+  45              		.loc 1 10 22 is_stmt 0 view .LVU6
+  46 0012 044B     		ldr	r3, .L2+8
+  47 0014 0022     		movs	r2, #0
+  48 0016 43F82020 		str	r2, [r3, r0, lsl #2]
+ARM GAS  C:\Users\tiend\AppData\Local\Temp\ccsToSib.s 			page 2
+
+
+  11:Core/Src/timer_software.c **** }
+  49              		.loc 1 11 1 view .LVU7
+  50 001a 7047     		bx	lr
+  51              	.L3:
+  52              		.align	2
+  53              	.L2:
+  54 001c 67666666 		.word	1717986919
+  55 0020 00000000 		.word	.LANCHOR0
+  56 0024 00000000 		.word	.LANCHOR1
+  57              		.cfi_endproc
+  58              	.LFE65:
+  60              		.section	.text.timer_run,"ax",%progbits
+  61              		.align	1
+  62              		.global	timer_run
+  63              		.syntax unified
+  64              		.thumb
+  65              		.thumb_func
+  67              	timer_run:
+  68              	.LFB66:
+  12:Core/Src/timer_software.c **** 
+  13:Core/Src/timer_software.c **** void timer_run()
+  14:Core/Src/timer_software.c **** {
+  69              		.loc 1 14 1 is_stmt 1 view -0
+  70              		.cfi_startproc
+  71              		@ args = 0, pretend = 0, frame = 0
+  72              		@ frame_needed = 0, uses_anonymous_args = 0
+  73              		@ link register save eliminated.
+  15:Core/Src/timer_software.c ****     for(int i = 0; i < 10; i++){
+  74              		.loc 1 15 5 view .LVU9
+  75              	.LBB2:
+  76              		.loc 1 15 9 view .LVU10
+  77              	.LVL2:
+  78              		.loc 1 15 13 is_stmt 0 view .LVU11
+  79 0000 0023     		movs	r3, #0
+  80              		.loc 1 15 5 view .LVU12
+  81 0002 00E0     		b	.L5
+  82              	.LVL3:
+  83              	.L6:
+  84              		.loc 1 15 28 is_stmt 1 discriminator 2 view .LVU13
+  85              		.loc 1 15 29 is_stmt 0 discriminator 2 view .LVU14
+  86 0004 0133     		adds	r3, r3, #1
+  87              	.LVL4:
+  88              	.L5:
+  89              		.loc 1 15 20 is_stmt 1 discriminator 1 view .LVU15
+  90              		.loc 1 15 5 is_stmt 0 discriminator 1 view .LVU16
+  91 0006 092B     		cmp	r3, #9
+  92 0008 0FDC     		bgt	.L8
+  16:Core/Src/timer_software.c ****       if(timer_counter[i] > 0){
+  93              		.loc 1 16 7 is_stmt 1 view .LVU17
+  94              		.loc 1 16 23 is_stmt 0 view .LVU18
+  95 000a 084A     		ldr	r2, .L9
+  96 000c 52F82320 		ldr	r2, [r2, r3, lsl #2]
+  97              		.loc 1 16 9 view .LVU19
+  98 0010 002A     		cmp	r2, #0
+  99 0012 F7DD     		ble	.L6
+  17:Core/Src/timer_software.c ****         timer_counter[i]--;
+ 100              		.loc 1 17 9 is_stmt 1 view .LVU20
+ARM GAS  C:\Users\tiend\AppData\Local\Temp\ccsToSib.s 			page 3
+
+
+ 101              		.loc 1 17 25 is_stmt 0 view .LVU21
+ 102 0014 013A     		subs	r2, r2, #1
+ 103 0016 0549     		ldr	r1, .L9
+ 104 0018 41F82320 		str	r2, [r1, r3, lsl #2]
+  18:Core/Src/timer_software.c ****         if(timer_counter[i] <= 0){
+ 105              		.loc 1 18 9 is_stmt 1 view .LVU22
+ 106              		.loc 1 18 11 is_stmt 0 view .LVU23
+ 107 001c 002A     		cmp	r2, #0
+ 108 001e F1DC     		bgt	.L6
+  19:Core/Src/timer_software.c ****           timerFLag[i] = 1;
+ 109              		.loc 1 19 11 is_stmt 1 view .LVU24
+ 110              		.loc 1 19 24 is_stmt 0 view .LVU25
+ 111 0020 034A     		ldr	r2, .L9+4
+ 112 0022 0121     		movs	r1, #1
+ 113 0024 42F82310 		str	r1, [r2, r3, lsl #2]
+ 114 0028 ECE7     		b	.L6
+ 115              	.L8:
+ 116              	.LBE2:
+  20:Core/Src/timer_software.c ****         }
+  21:Core/Src/timer_software.c ****       }
+  22:Core/Src/timer_software.c ****     }
+  23:Core/Src/timer_software.c **** }...
+ 117              		.loc 1 23 1 view .LVU26
+ 118 002a 7047     		bx	lr
+ 119              	.L10:
+ 120              		.align	2
+ 121              	.L9:
+ 122 002c 00000000 		.word	.LANCHOR0
+ 123 0030 00000000 		.word	.LANCHOR1
+ 124              		.cfi_endproc
+ 125              	.LFE66:
+ 127              		.global	timerFLag
+ 128              		.global	timer_counter
+ 129              		.section	.bss.timerFLag,"aw",%nobits
+ 130              		.align	2
+ 131              		.set	.LANCHOR1,. + 0
+ 134              	timerFLag:
+ 135 0000 00000000 		.space	40
+ 135      00000000 
+ 135      00000000 
+ 135      00000000 
+ 135      00000000 
+ 136              		.section	.bss.timer_counter,"aw",%nobits
+ 137              		.align	2
+ 138              		.set	.LANCHOR0,. + 0
+ 141              	timer_counter:
+ 142 0000 00000000 		.space	40
+ 142      00000000 
+ 142      00000000 
+ 142      00000000 
+ 142      00000000 
+ 143              		.text
+ 144              	.Letext0:
+ 145              		.file 2 "Core/Inc/timer_software.h"
+ARM GAS  C:\Users\tiend\AppData\Local\Temp\ccsToSib.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 timer_software.c
+C:\Users\tiend\AppData\Local\Temp\ccsToSib.s:18     .text.set_timer:00000000 $t
+C:\Users\tiend\AppData\Local\Temp\ccsToSib.s:24     .text.set_timer:00000000 set_timer
+C:\Users\tiend\AppData\Local\Temp\ccsToSib.s:54     .text.set_timer:0000001c $d
+C:\Users\tiend\AppData\Local\Temp\ccsToSib.s:61     .text.timer_run:00000000 $t
+C:\Users\tiend\AppData\Local\Temp\ccsToSib.s:67     .text.timer_run:00000000 timer_run
+C:\Users\tiend\AppData\Local\Temp\ccsToSib.s:122    .text.timer_run:0000002c $d
+C:\Users\tiend\AppData\Local\Temp\ccsToSib.s:134    .bss.timerFLag:00000000 timerFLag
+C:\Users\tiend\AppData\Local\Temp\ccsToSib.s:141    .bss.timer_counter:00000000 timer_counter
+C:\Users\tiend\AppData\Local\Temp\ccsToSib.s:130    .bss.timerFLag:00000000 $d
+C:\Users\tiend\AppData\Local\Temp\ccsToSib.s:137    .bss.timer_counter:00000000 $d
+
+NO UNDEFINED SYMBOLS

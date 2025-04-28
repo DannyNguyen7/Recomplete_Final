@@ -1,0 +1,19 @@
+{
+    "configurations": [
+    {
+        "cwd": "${workspaceRoot}",
+        "executable": "./build/F1_TPS.elf",
+        "name": "Debug with OpenOCD",
+        "request": "launch",
+        "type": "cortex-debug",
+        "servertype": "openocd",
+        "configFiles": [
+            "C:/openocd/scripts/interface/stlink.cfg",
+            "C:/openocd/scripts/target/stm32f1x.cfg"
+        ],
+        "searchDir": [],
+        "runToEntryPoint": "main",
+        "showDevDebugOutput": "none"
+    }
+    ]
+}

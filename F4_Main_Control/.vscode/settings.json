@@ -1,0 +1,5 @@
+{
+    "cortex-debug.gdbPath": "C:/gcc-arm-none-eabi/bin/arm-none-eabi-gdb.exe",
+    "cortex-debug.openocdPath": "C:/openocd/bin/openocd",
+    "cmake.sourceDirectory": "D:/University/Term 5/Final_Project/1. Source code main/2. Complete/F4_Main_Control/Drivers/CMSIS/DSP/Source/MatrixFunctions",
+}
