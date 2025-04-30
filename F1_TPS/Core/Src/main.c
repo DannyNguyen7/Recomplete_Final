@@ -104,7 +104,7 @@ float adc_to_voltage(uint32_t adc_value) {
 
 int check_sensor(float v1, float v2) {
     float sum = v1 + v2;
-    if (fabs(sum - V_SUM) >= 0.1) return 0;
+    if (fabs(sum - V_SUM) >= 0.2) return 0;
     return 1;
 }
 
@@ -271,16 +271,16 @@ int main(void)
       v1 = adc_to_voltage(TPS1);
       v2 = adc_to_voltage(TPS2);
 
-      // if (!check_sensor(v1, v2)) 
-      // {
-      //   debug_print("Sensor Error: TPS1 + TPS2 sum invalid\r\n");
-      //   continue;
-      // } 
+      if (!check_sensor(v1, v2)) 
+      {
+        debug_print("Sensor Error: TPS1 + TPS2 sum invalid\r\n");
+        continue;
+      } 
     
-      // else {
+      else {
      
       send_TPS(TPS1, TPS2);
-      // }
+      }
       set_timer(0, 10);
 
     }

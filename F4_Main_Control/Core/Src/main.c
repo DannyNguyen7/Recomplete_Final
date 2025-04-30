@@ -267,9 +267,9 @@ int main(void)
         Error_Handler();
     }
     HAL_CAN_ActivateNotification(&hcan1, CAN_IT_TX_MAILBOX_EMPTY | CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_BUSOFF );
-
-     HAL_TIM_Base_Start_IT(&htim2);
-  set_timer(0, 10);
+    HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+    HAL_TIM_Base_Start_IT(&htim2);
+    set_timer(0, 10);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -280,6 +280,7 @@ int main(void)
     {
       position = calculate_position(TPS1); 
 
+    
       PID_control(); 
       control_motor(output); 
       set_timer(0, 10);
