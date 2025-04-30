@@ -20,8 +20,9 @@ float V[V_memory_count];           // This array is synchronized with Virtuino V
 
 #define RECEIVE_CAN_ID      0x100
 #define TRANS_CAN_ID        0x101
-
-
+#define V_MIN               0.497f
+#define V_MAX               3
+#define ADC_MAX             4095
 //-------------------------------------
 #define _Base_Freq          10   // Hz
 //-------------------------------------
@@ -30,6 +31,7 @@ portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
 #define _BaseTimer_CLK      1000000  // Hz
 #define _BaseTimer_PRE      (_Sys_CLK / _BaseTimer_CLK) 
 #define _BaseTimer_TOP      (_BaseTimer_CLK / _Base_Freq)
+
 hw_timer_t * BaseTimer = NULL;
 
 twai_message_t rx_message, tx_message;
@@ -41,6 +43,18 @@ void IRAM_ATTR onBaseTimer()
   portENTER_CRITICAL_ISR(&timerMux);
   Gui_flag = true;
   portEXIT_CRITICAL_ISR(&timerMux);
+}
+
+float adc_to_voltage(uint32_t adc_value) {
+    return (float)adc_value * 3.3 / ADC_MAX; // Chuyển đổi giá trị ADC sang điện áp
+}
+
+float calculate_position(uint16_t adc_value) {
+    float voltage = adc_to_voltage(adc_value);
+    float position = (voltage - V_MIN) / (V_MAX - V_MIN) * 100;
+    if (position < 0) position = 0;
+    if (position > 100) position = 100;
+    return position;
 }
 
 void setup() 
@@ -113,7 +127,9 @@ void loop()
       Serial.print(" ");
       }
       Serial.println();
-      actual_TPS = (rx_message.data[1] << 8) | rx_message.data[0];
+      uint16_t TPS1 = (rx_message.data[1] << 8) | rx_message.data[0];
+      actual_TPS = calculate_position(TPS1);
+      V[0] = actual_TPS;
     }
   }
   if(V[2] != last_button_state)//Đọc được nút nhấn từ app V[2]
